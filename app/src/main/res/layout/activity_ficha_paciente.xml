@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ficha_titulo"
+                android:textColor="@color/text_primary"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Tarjeta de Datos Duros -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                app:cardBackgroundColor="@color/card_background"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/chip_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:id="@+id/tv_nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ficha_cargando"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <TextView
+                        android:id="@+id/tv_rut"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/text_secondary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <!-- NUEVO: edad -->
+                    <TextView
+                        android:id="@+id/tv_edad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <!-- NUEVO: peso y estatura -->
+                    <TextView
+                        android:id="@+id/tv_medidas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <TextView
+                        android:id="@+id/tv_sangre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <TextView
+                        android:id="@+id/tv_alergias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/text_primary"
+                        android:textSize="18sp"
+                        android:layout_marginBottom="12dp"/>
+                    <!-- NUEVO: condiciones clínicas -->
+                    <TextView
+                        android:id="@+id/tv_condiciones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/accent_stand"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp"/>
+                    <!-- NUEVO: datos de la cédula (solo se muestran si existen) -->
+                    <TextView
+                        android:id="@+id/tv_nacimiento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:visibility="gone"/>
+                    <TextView
+                        android:id="@+id/tv_documento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="15sp"
+                        android:visibility="gone"/>
+                    <!-- NUEVO: contacto de emergencia -->
+                    <TextView
+                        android:id="@+id/tv_contacto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="20dp"/>
+
+                    <!-- Botón: editar datos, dentro de la tarjeta de datos -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditarDatos"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="@string/ficha_btn_editar"
+                        android:textColor="@color/text_primary"
+                        app:backgroundTint="@color/accent_stand"
+                        app:cornerRadius="12dp"
+                        android:textSize="15sp" />
+
+                    <!-- NUEVO: DELETE en Firestore (pide confirmación) -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEliminarPaciente"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/ficha_btn_eliminar"
+                        android:textColor="@color/accent_move"
+                        app:strokeColor="@color/accent_move"
+                        app:cornerRadius="12dp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- NUEVO: registros diarios del paciente (subcolección en Firestore) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRegistros"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/ficha_btn_registros"
+                android:textColor="@color/text_primary"
+                android:textSize="17sp"
+                app:backgroundTint="@color/accent_stand"
+                app:cornerRadius="16dp" />
+
+            <!-- NUEVO: foto de perfil. Oculta hasta que la cámara devuelve una imagen -->
+            <ImageView
+                android:id="@+id/iv_foto_perfil"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:contentDescription="@string/cd_foto_perfil"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <!-- Botones de Acción (Intents Implícitos) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLlamar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ficha_btn_llamar"
+                android:textColor="@color/text_primary"
+                app:backgroundTint="@color/btn_red"
+                app:cornerRadius="16dp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- NUEVO: llama al contacto de emergencia guardado en Firestore -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLlamarContacto"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ficha_cargando"
+                android:textColor="@color/text_primary"
+                app:backgroundTint="@color/accent_move"
+                app:cornerRadius="16dp"
+                android:layout_marginBottom="12dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ficha_btn_correo"
+                android:textColor="@color/screen_background"
+                app:backgroundTint="@color/accent_exercise"
+                app:cornerRadius="16dp"
+                android:layout_marginBottom="12dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFoto"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/ficha_btn_foto"
+                android:textColor="@color/text_primary"
+                app:backgroundTint="@color/btn_purple"
+                app:cornerRadius="16dp"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Botón de Retorno -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVolverFicha"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="@string/btn_volver_pacientes"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/accent_yellow"
+                app:cornerRadius="16dp" 
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

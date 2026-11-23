@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ===== General ===== -->
+    <string name="app_name">CuidApp</string>
+    <string name="title_health">📈 Monitoreo diario</string>
+    <string name="err_no_app">⚠️ No hay una aplicación para realizar esta acción.</string>
+    <string name="err_ui_init">⚠️ Error de inicialización de la interfaz.</string>
+    <string name="msg_vista_desarrollo">🚧 Vista en desarrollo</string>
+
+    <!-- ===== Datos técnicos de los Intents (no se traducen) ===== -->
+    <string name="intent_tel_emergencia" translatable="false">tel:131</string>
+    <string name="intent_mailto_cuidador" translatable="false">mailto:cuidador@correo.com</string>
+    <string name="intent_url_minsal" translatable="false">https://www.minsal.cl</string>
+    <string name="intent_busqueda_hospital" translatable="false">hospital</string>
+
+    <!-- ===== Menú Principal ===== -->
+    <string name="menu_bienvenida">Bienvenido a CuidApp 🩺</string>
+    <string name="menu_saludo">Hola, %1$s 👋</string>
+    <string name="menu_cerrar_sesion">🚪 Cerrar sesión</string>
+    <string name="menu_ficha">👥 Mis Pacientes</string>
+    <string name="menu_expedientes">🩺 Expedientes Médicos</string>
+    <string name="menu_monitoreo">📈 Monitoreo Diario</string>
+    <string name="menu_hospital">📍 Buscar Hospital Cercano</string>
+    <string name="menu_web">🌐 Portal Minsal</string>
+    <string name="msg_ubicacion_denegada">📍 Sin permiso de ubicación: el mapa buscará sin usar tu posición.</string>
+
+    <!-- ===== Ficha Paciente ===== -->
+    <string name="ficha_titulo">👤 Datos del Paciente</string>
+    <string name="ficha_nombre">Nombre: Juan Pérez</string>
+    <string name="ficha_rut">RUT: 12.345.678-9</string>
+    <string name="ficha_sangre">Sangre: O+ 🩸</string>
+    <string name="ficha_alergias">Alergias: Penicilina 🚫</string>
+    <string name="ficha_btn_llamar">🆘 Llamar Emergencia</string>
+    <string name="ficha_btn_correo">✉️ Enviar ficha por correo</string>
+    <string name="ficha_btn_foto">📸 Tomar Foto Perfil</string>
+    <string name="btn_volver">🔙 Volver al Menú</string>
+    <string name="btn_volver_pacientes">🔙 Volver a Mis Pacientes</string>
+    <string name="email_subject">🚨 Reporte de Paciente</string>
+    <string name="msg_camara_denegada">📸 Permiso de cámara denegado. Actívalo en los Ajustes del teléfono para tomar fotos.</string>
+    <string name="ficha_datos_guardados">✅ Datos guardados correctamente.</string>
+    <string name="err_sin_camara">📷 Este dispositivo no tiene cámara.</string>
+
+    <!-- ===== Mis Expedientes ===== -->
+    <string name="expedientes_titulo">🩺 Expedientes Médicos</string>
+    <string name="expedientes_btn_subir">📄 Cargar Documento</string>
+    <string name="expedientes_ninguno">Ningún documento seleccionado</string>
+    <string name="expedientes_seleccionado">✅ Seleccionado: %1$s</string>
+    <string name="expedientes_sin_archivo">⚠️ No se pudo leer el documento seleccionado.</string>
+
+    <!-- ===== Dashboard ===== -->
+    <string name="label_move">Registros hoy</string>
+    <string name="label_exercise">Ejercicio</string>
+    <string name="label_stand">Medicación</string>
+    <string name="val_move">0/0</string>
+    <string name="val_move_unit">pacientes</string>
+    <string name="val_exercise">0</string>
+    <string name="val_exercise_unit">de 30 min</string>
+    <string name="val_stand">0/0</string>
+    <string name="val_stand_unit">tomada</string>
+    <string name="val_steps">Sin alertas hoy</string>
+    <string name="cd_anillos">Anillos del día: pacientes con registro, minutos de ejercicio y medicación tomada</string>
+    <string name="back_to_main_menu">🔙 Volver al menú principal</string>
+    <string name="share_report">📤 Compartir reporte</string>
+    <string name="share_report_text">Mi reporte de salud...\nPasos: 10,000</string>
+    <string name="share_chooser_title">Compartir reporte de salud</string>
+
+    <!-- Sensor cardíaco -->
+    <string name="bpm_esperando">❤️ Cargando…</string>
+    <string name="bpm_lectura">❤️ %1$d lpm</string>
+    <string name="alerta_titulo">⚠️ Alerta de Salud</string>
+    <string name="alerta_taquicardia_mensaje">Se ha detectado un ritmo cardíaco inusualmente alto: %1$d BPM.</string>
+    <string name="alerta_btn_entendido">Entendido</string>
+
+    <!-- Barra de navegación inferior -->
+    <string name="nav_health">Salud</string>
+    <string name="nav_exercise">Ejercicio</string>
+    <string name="nav_web">Web</string>
+    <string name="nav_navegador">Navegador</string>
+
+    <string name="msg_foto_cancelada">📷 Captura de foto cancelada.</string>
+    <string name="err_foto">⚠️ No se pudo obtener la foto.</string>
+    <string name="cd_foto_perfil">Foto de perfil del paciente</string>
+
+    <!-- ===== NUEVO: Login y Registro (Firebase Authentication) ===== -->
+    <string name="login_titulo">🩺 CuidApp</string>
+    <string name="login_subtitulo">Inicia sesión para ver la información de tus pacientes</string>
+    <string name="registro_titulo">Crear cuenta de cuidador</string>
+    <string name="registro_subtitulo">Tu contraseña la protege Firebase Authentication; nunca se guarda en la base de datos</string>
+    <string name="hint_nombre_usuario">Tu nombre</string>
+    <string name="hint_correo">Correo electrónico</string>
+    <string name="hint_clave">Contraseña</string>
+    <string name="hint_confirmar_clave">Repite la contraseña</string>
+    <string name="btn_ingresar">Iniciar sesión</string>
+    <string name="btn_crear_cuenta">Crear cuenta</string>
+    <string name="link_ir_registro">¿No tienes cuenta? Regístrate</string>
+    <string name="link_ir_login">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="msg_sesion_cerrada">👋 Sesión cerrada</string>
+    <string name="dialogo_cerrar_titulo">Cerrar sesión</string>
+    <string name="dialogo_cerrar_mensaje">¿Seguro que quieres cerrar sesión?</string>
+    <string name="si_salir">Salir</string>
+    <string name="cancelar">Cancelar</string>
+
+    <!-- ===== NUEVO: Mis Pacientes (Cloud Firestore) ===== -->
+    <string name="pacientes_titulo">👥 Mis Pacientes</string>
+    <string name="pacientes_vacio">Aún no registras pacientes.\nToca el botón + para agregar el primero.</string>
+    <string name="pacientes_contador_uno">1 paciente registrado</string>
+    <string name="pacientes_contador">%1$d pacientes registrados</string>
+    <string name="paciente_item_detalle">RUT %1$s · %2$d años</string>
+    <string name="paciente_item_salud">🩸 %1$s  ·  🩺 %2$s</string>
+    <string name="desc_agregar_paciente">Agregar paciente</string>
+    <string name="desc_volver">Volver</string>
+
+    <!-- Ficha (datos desde Firestore) -->
+    <string name="ficha_fmt_nombre">Nombre: %1$s</string>
+    <string name="ficha_fmt_rut">RUT: %1$s</string>
+    <string name="ficha_fmt_edad">Edad / Sexo: %1$d años · %2$s</string>
+    <string name="ficha_fmt_medidas">Peso / Estatura: %1$s kg · %2$s m</string>
+    <string name="ficha_fmt_condiciones">Condiciones: %1$s</string>
+    <string name="ficha_fmt_sangre">Sangre: %1$s 🩸</string>
+    <string name="ficha_fmt_alergias">Alergias: %1$s 🚫</string>
+    <string name="ficha_fmt_contacto">Contacto de emergencia: %1$s, %2$s (%3$s)</string>
+    <string name="ficha_btn_registros">📋 Registros diarios de salud</string>
+    <string name="ficha_cargando">Cargando…</string>
+    <string name="ficha_btn_editar">✏️ Editar datos del paciente</string>
+    <string name="ficha_btn_eliminar">🗑️ Eliminar paciente</string>
+    <string name="ficha_btn_llamar_contacto">📞 Llamar a %1$s</string>
+    <string name="ficha_sin_id">⚠️ No se indicó qué paciente abrir.</string>
+    <string name="ficha_eliminado">El paciente ya no existe.</string>
+    <string name="ficha_eliminado_ok">🗑️ Paciente eliminado</string>
+    <string name="email_subject_paciente">🚨 Reporte de Paciente: %1$s</string>
+    <string name="email_cuerpo_paciente">Ficha del paciente\n\nNombre: %1$s\nRUT: %2$s\nEdad: %3$d años\nSangre: %4$s\nCondiciones: %8$s\nAlergias: %5$s\nContacto de emergencia: %6$s (%7$s)\n\nEnviado desde CuidApp</string>
+    <string name="dialogo_eliminar_titulo">Eliminar paciente</string>
+    <string name="dialogo_eliminar_mensaje">¿Eliminar a %1$s? Esta acción no se puede deshacer.</string>
+    <string name="si_eliminar">Eliminar</string>
+
+    <!-- Formulario de paciente -->
+    <string name="form_titulo_nuevo">➕ Nuevo Paciente</string>
+    <string name="form_titulo_editar">✏️ Editar Paciente</string>
+    <string name="form_seccion_paciente">Datos del paciente</string>
+    <string name="form_seccion_contacto">Contacto de emergencia</string>
+    <string name="hint_nombre_paciente">Nombre completo *</string>
+    <string name="hint_rut">RUT (ej: 12345678-5) *</string>
+    <string name="hint_edad">Edad *</string>
+    <string name="hint_sangre">Tipo de sangre *</string>
+    <string name="hint_alergias">Alergias (vacío = Ninguna)</string>
+    <string name="hint_contacto_nombre">Nombre del contacto *</string>
+    <string name="hint_contacto_telefono">Celular del contacto (8 dígitos) *</string>
+    <string name="hint_sexo">Sexo *</string>
+    <string name="hint_peso">Peso en kg (ej: 72,5) *</string>
+    <string name="hint_estatura">Estatura en metros (ej: 1,80) *</string>
+    <string name="hint_relacion">Relación con el paciente *</string>
+    <string name="form_seccion_condiciones">Condiciones clínicas</string>
+    <string name="form_condiciones_ayuda">Según lo que marques, el registro diario pedirá distintos controles. Si no marcas ninguna, se hace monitoreo general.</string>
+    <string name="cond_hipertension">❤️ Hipertensión arterial</string>
+    <string name="cond_diabetes">🩸 Diabetes mellitus</string>
+    <string name="cond_epoc">🫁 EPOC o asma</string>
+    <string name="cond_erc">💧 Enfermedad renal crónica</string>
+    <string name="campos_obligatorios">* Campos obligatorios</string>
+    <string name="btn_guardar">💾 Guardar paciente</string>
+    <string name="btn_actualizar">💾 Actualizar paciente</string>
+
+    <string-array name="tipos_sangre">
+        <item>O+</item>
+        <item>O-</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+    </string-array>
+
+    <!-- ===== NUEVO: Registros diarios (idea de la demo web) ===== -->
+    <string name="registros_titulo">📋 Registros diarios</string>
+    <string name="registros_vacio">Aún no hay registros.\nToca el botón + para anotar los controles de hoy.</string>
+    <string name="registros_subtitulo">%1$s · %2$s</string>
+    <string name="registros_contador">%1$d registros · %2$d con alertas</string>
+    <string name="desc_registro_hoy">Registro de hoy</string>
+    <string name="registro_titulo_nuevo">📝 Registro de hoy</string>
+    <string name="registro_titulo_editar">📝 Registro del %1$s</string>
+    <string name="registro_bloqueado">🔒 Registro con más de 24 horas: es de solo lectura por seguridad clínica.</string>
+    <string name="registro_item_ok">✅ Valores dentro de rango</string>
+    <string name="registro_item_alertas">⚠️ %1$s</string>
+    <string name="registro_item_bloqueado">🔒 Solo lectura</string>
+    <string name="registro_item_editable">✏️ Editable hasta 24 h</string>
+    <string name="sec_cardio">❤️ Riesgo cardiovascular</string>
+    <string name="sec_diabetes">🩸 Control metabólico</string>
+    <string name="sec_epoc">🫁 Evaluación respiratoria</string>
+    <string name="sec_erc">💧 Control renal</string>
+    <string name="sec_general">🌿 Bienestar general</string>
+    <string name="hint_sistolica">Sistólica (mmHg) *</string>
+    <string name="hint_diastolica">Diastólica (mmHg) *</string>
+    <string name="hint_fc">Frecuencia cardíaca (lpm) *</string>
+    <string name="hint_glucemia">Glucemia capilar (mg/dL) *</string>
+    <string name="hint_momento">Momento de la medición *</string>
+    <string name="hint_insulina">Insulina (UI) - opcional</string>
+    <string name="hint_saturacion" formatted="false">Saturación SpO2 (%) *</string>
+    <string name="hint_fr">Frecuencia respiratoria (rpm) *</string>
+    <string name="hint_peso_diario">Peso del día (kg) *</string>
+    <string name="hint_diuresis">Diuresis (ml) *</string>
+    <string name="hint_notas">Notas del cuidador (opcional)</string>
+    <string name="registro_medicacion">💊 Tomó su medicación hoy</string>
+    <string name="registro_dolor">Nivel de dolor (EVA 0-10): %1$d</string>
+    <string name="registro_rangos" formatted="false">Rangos de control: presión menor a 140/90 · SpO2 sobre 92% · glucemia 70-130 en ayunas</string>
+    <string name="btn_guardar_registro">💾 Guardar registro</string>
+    <string name="btn_eliminar_registro">🗑️ Eliminar registro</string>
+    <string name="registro_revisa_campos">Revisa los campos marcados en rojo</string>
+    <string name="registro_no_existe">Ese registro ya no existe.</string>
+    <string name="desc_slider_dolor">Nivel de dolor de 0 a 10</string>
+    <string name="dialogo_eliminar_registro">¿Eliminar el registro del %1$s?</string>
+
+    <string-array name="sexos">
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>Otro</item>
+    </string-array>
+    <string-array name="relaciones">
+        <item>Hija/o</item>
+        <item>Cónyuge</item>
+        <item>Hermana/o</item>
+        <item>Madre/Padre</item>
+        <item>Nieta/o</item>
+        <item>Amiga/o</item>
+        <item>Otro</item>
+    </string-array>
+    <string-array name="momentos_glucemia">
+        <item>Ayunas</item>
+        <item>Antes de comer</item>
+        <item>2 h después de comer</item>
+        <item>Antes de dormir</item>
+    </string-array>
+
+
+    <!-- ===== NUEVO: escaneo de cédula y datos del documento ===== -->
+    <string name="btn_escanear_cedula">📷 Escanear cédula de identidad</string>
+    <string name="escanear_ayuda">Toma una foto de la cédula (frente o reverso) y los datos se llenan solos. Revísalos antes de guardar.</string>
+    <string name="escanear_titulo">Escanear cédula</string>
+    <string name="escanear_camara">📷 Tomar foto</string>
+    <string name="escanear_galeria">🖼️ Elegir de la galería</string>
+    <string name="escanear_leyendo">Leyendo la cédula…</string>
+    <string name="escanear_sin_datos">No se pudo leer la cédula. Prueba con más luz, sin reflejos y con la cédula completa en la foto.</string>
+    <string name="escanear_ok">Se leyeron %1$d datos de la cédula. Revisa que estén correctos.</string>
+    <string name="escanear_rut_invalido">Se leyó un RUT, pero su dígito verificador no coincide. Revísalo.</string>
+    <string name="form_seccion_documento">Documento de identidad</string>
+    <string name="form_documento_ayuda">Opcional. Se llena al escanear la cédula. La firma no se guarda: es una imagen, no texto.</string>
+    <string name="hint_nacionalidad">Nacionalidad</string>
+    <string name="hint_fecha_nacimiento">Fecha de nacimiento (dd/mm/aaaa)</string>
+    <string name="hint_numero_documento">Número de documento</string>
+    <string name="hint_fecha_emision">Fecha de emisión (dd/mm/aaaa)</string>
+    <string name="hint_fecha_vencimiento">Fecha de vencimiento (dd/mm/aaaa)</string>
+    <string name="btn_cancelar_formulario">Cancelar</string>
+    <string name="dialogo_descartar_titulo">¿Descartar los cambios?</string>
+    <string name="dialogo_descartar_mensaje">Lo que escribiste no se guardará.</string>
+    <string name="descartar">Descartar</string>
+    <string name="seguir_editando">Seguir editando</string>
+    <string name="ficha_fmt_documento">Cédula: N° %1$s · vence %2$s</string>
+    <string name="ficha_fmt_nacimiento">Nacimiento: %1$s · %2$s</string>
+    <string name="ficha_cedula_vencida">⚠️ Cédula vencida (%1$s)</string>
+
+    <!-- ===== NUEVO: Monitoreo diario con datos reales ===== -->
+    <string name="dash_pulso_titulo">Último pulso registrado</string>
+    <string name="dash_pulso_detalle">%1$s · %2$s</string>
+    <string name="dash_sin_pulso">Sin pulsos registrados</string>
+    <string name="dash_sin_pulso_detalle">Anota la frecuencia cardíaca en los registros diarios de un paciente con hipertensión o enfermedad renal.</string>
+    <string name="dash_alertas">⚠️ %1$d alertas en los registros de hoy</string>
+    <string name="dash_sin_alertas">✅ Sin alertas en los registros de hoy</string>
+    <string name="dash_reporte">Reporte de CuidApp (%1$s)\n\nPacientes con registro hoy: %2$d de %3$d\nRegistros con medicación tomada: %4$d de %5$d\nAlertas de hoy: %6$d\nEjercicio de hoy: %7$d min\nÚltimo pulso: %8$s</string>
+
+    <!-- ===== NUEVO: Ejercicio ===== -->
+    <string name="ejercicio_titulo">🏃 Ejercicio</string>
+    <string name="ejercicio_hoy">Hoy: %1$d de %2$d minutos</string>
+    <string name="ejercicio_aviso">Detén el ejercicio si aparece dolor en el pecho, mareo o mucha falta de aire.</string>
+    <string name="ejercicio_iniciar">▶ Iniciar</string>
+    <string name="ejercicio_pausar">⏸ Pausar</string>
+    <string name="ejercicio_reanudar">▶ Reanudar</string>
+    <string name="ejercicio_terminar">⏹ Terminar</string>
+    <string name="ejercicio_paso">Paso %1$d de %2$d</string>
+    <string name="ejercicio_minutos">%1$d min</string>
+    <string name="ejercicio_sumado">💪 ¡Bien! Se sumaron %1$d min de ejercicio</string>
+    <string name="ejercicio_muy_corto">Rutina terminada antes del primer minuto: no se sumó tiempo</string>
+    <string name="ejercicio_en_curso">Termina o pausa la rutina actual antes de empezar otra</string>
+
+    <!-- ===== NUEVO: Web y Navegador ===== -->
+    <string name="url_cuidapp_web">https://bksp.github.io/cuidApp-demo/</string>
+    <string name="web_titulo">🌐 CuidApp Web</string>
+    <string name="web_abrir_navegador">Abrir en el navegador</string>
+    <string name="web_sin_conexion">No se pudo cargar CuidApp Web. Revisa tu conexión a internet.</string>
+    <string name="web_reintentar">Reintentar</string>
+    <string name="navegador_titulo">🧭 Navegador</string>
+    <string name="navegador_subtitulo">Sitios útiles para el cuidado. Se abren en el navegador del teléfono.</string>
+    <string name="navegador_buscar">Buscar en la web</string>
+    <string name="navegador_buscar_hint">Ej: ejercicios para adultos mayores</string>
+    <string name="navegador_buscar_vacio">Escribe qué quieres buscar</string>
+    <string name="form_revisar">Revisa los campos marcados en rojo</string>
+</resources>

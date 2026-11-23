@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Tema OSCURO siempre (modo claro y oscuro iguales) y sin ActionBar:
+         las pantallas usan su propio título o una MaterialToolbar.
+         MEJORA: antes el modo claro usaba DarkActionBar y el oscuro NoActionBar,
+         así que la app se veía distinta según el modo del teléfono. -->
+    <style name="Theme.CuidApp" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/accent_purple</item>
+        <item name="colorPrimaryVariant">@color/btn_purple</item>
+        <item name="colorOnPrimary">@color/text_primary</item>
+        <item name="colorSecondary">@color/accent_green</item>
+        <item name="colorSecondaryVariant">@color/btn_green</item>
+        <item name="colorOnSecondary">@color/text_primary</item>
+        <item name="colorSurface">@color/card_background</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorError">@color/accent_move</item>
+        <item name="android:windowBackground">@color/screen_background</item>
+        <item name="android:statusBarColor">@color/screen_background</item>
+    </style>
+</resources>

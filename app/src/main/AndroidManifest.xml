@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ===== PERMISOS ===== -->
+    <!-- Cámara: se pide en tiempo de ejecución en FichaPacienteActivity -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Internet: Portal Minsal y Firebase (Authentication + Firestore) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Estado de la red: Firebase lo usa para saber si hay conexión -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Ubicación: se pide en tiempo de ejecución en MenuPrincipalActivity.
+         Desde Android 12 se declaran FINE y COARSE juntos, porque el usuario puede elegir "aproximada". -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- La cámara no es obligatoria: la app también funciona en equipos sin cámara -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <!-- ===== VISIBILIDAD DE PAQUETES (Android 11+) =====
+         Un bloque por cada intent implícito de la app (los 5 de la rúbrica). -->
+    <queries>
+        <intent>   <!-- Intent #4: llamada -->
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <intent>   <!-- Intent #5: correo -->
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+        <intent>   <!-- Intent #6: cámara -->
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>   <!-- Intent #7: mapas -->
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="geo" />
+        </intent>
+        <intent>   <!-- Intent #8: navegador -->
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CuidApp">
+
+        <!-- NUEVO: Login es ahora la pantalla de inicio (Launcher) -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".RegistroActivity" android:exported="false" />
+
+        <!-- Menú Principal (se llega después de iniciar sesión) -->
+        <activity android:name=".MenuPrincipalActivity" android:exported="false" />
+
+        <!-- NUEVO: CRUD de pacientes con Cloud Firestore -->
+        <activity android:name=".PacientesActivity" android:exported="false" />
+        <activity android:name=".FormularioPacienteActivity" android:exported="false" />
+        <activity android:name=".FichaPacienteActivity" android:exported="false" />
+
+        <!-- Demás Activities (solo accesibles desde dentro de la app) -->
+        <activity android:name=".DashboardActivity" android:exported="false" />
+        <activity android:name=".MisExpedientesActivity" android:exported="false" />
+
+        <!-- NUEVO: registros diarios de salud (subcolección pacientes/{id}/registros) -->
+        <activity android:name=".RegistrosActivity" android:exported="false" />
+        <activity
+            android:name=".FormularioRegistroActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- NUEVO: comparte con la app de cámara el archivo donde guardar la foto de la cédula -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- NUEVO: pestañas del Monitoreo Diario -->
+        <activity android:name=".EjercicioActivity" android:exported="false" />
+        <activity android:name=".WebCuidAppActivity" android:exported="false" />
+        <activity android:name=".NavegadorActivity" android:exported="false" />
+
+    </application>
+</manifest>

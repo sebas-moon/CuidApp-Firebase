@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "894676097881",
+    "project_id": "cuidapp-6048b",
+    "storage_bucket": "cuidapp-6048b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894676097881:android:43c809fe05477a04308a48",
+        "android_client_info": {
+          "package_name": "com.santo_tomas.cuidapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ6S6n2fHzOcNxFtvgx8Q_5rzvRYq8A8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
