@@ -20,6 +20,10 @@ await t('alice NO crea paciente con uid de bob', setDoc(doc(alice,'pacientes/p2'
 await t('NO acepta campo extra (clave)', setDoc(doc(alice,'pacientes/p3'), pac('alice',{clave:'123'})), false);
 await t('NO acepta condición inventada', setDoc(doc(alice,'pacientes/p4'), pac('alice',{condiciones:['CANCER']})), false);
 await t('NO acepta peso 500', setDoc(doc(alice,'pacientes/p5'), pac('alice',{peso:500})), false);
+await t('NO acepta nombre con números', setDoc(doc(alice,'pacientes/p5f'), pac('alice',{nombre:'Juan 123'})), false);
+await t('NO acepta contacto con números', setDoc(doc(alice,'pacientes/p5g'), pac('alice',{contactoNombre:'Ana 2'})), false);
+await t('NO acepta alergias con números', setDoc(doc(alice,'pacientes/p5h'), pac('alice',{alergias:'Penicilina 500'})), false);
+await t('NO acepta nacionalidad con números', setDoc(doc(alice,'pacientes/p5i'), pac('alice',{nacionalidad:'Chil3na'})), false);
 await t('NO acepta peso 11111', setDoc(doc(alice,'pacientes/p5b'), pac('alice',{peso:11111})), false);
 await t('NO acepta peso 1 kg', setDoc(doc(alice,'pacientes/p5c'), pac('alice',{peso:1})), false);
 await t('NO acepta edad 150', setDoc(doc(alice,'pacientes/p5d'), pac('alice',{edad:150})), false);
@@ -64,6 +68,7 @@ await t('borrado en cascada (paciente + registro antiguo) en lote', b.commit(), 
 
 await t('usuarios: perfil propio sin contraseña', setDoc(doc(alice,'usuarios/alice'), {nombre:'Alice', correo:'a@a.cl', fechaCreacion: serverTimestamp()}), true);
 await t('usuarios: NO guarda contraseña', setDoc(doc(alice,'usuarios/alice'), {nombre:'Alice', correo:'a@a.cl', clave:'123456'}), false);
+await t('usuarios: NO acepta nombre con números', setDoc(doc(alice,'usuarios/alice'), {nombre:'Alice99', correo:'a@a.cl', fechaCreacion: serverTimestamp()}), false);
 await t('usuarios: NO escribe perfil ajeno', setDoc(doc(alice,'usuarios/bob'), {nombre:'x', correo:'x@x.cl'}), false);
 await t('otra colección cerrada', setDoc(doc(alice,'otra/x'), {a:1}), false);
 console.log(`\n${ok} OK, ${bad} fallidas`);

@@ -1,15 +1,20 @@
+# Android Studio / Gradle
 *.iml
-.gradle
+.gradle/
+.kotlin/
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+local.properties
+.idea/
 .DS_Store
-/build
+build/
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+*.apk
+*.aab
+
+# Pruebas de reglas (Node)
+pruebas-reglas/node_modules/
+pruebas-reglas/*.log
+firebase-debug.log
+firestore-debug.log

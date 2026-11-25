@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.santo_tomas.cuidapp.util.Textos;
 import com.santo_tomas.cuidapp.viewmodel.AuthViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -33,6 +34,7 @@ public class RegistroActivity extends BaseActivity {
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
         etNombre = findViewById(R.id.etNombre);
+        Textos.bloquearNumeros(etNombre);   // el nombre del cuidador no lleva números
         etCorreo = findViewById(R.id.etCorreo);
         etClave = findViewById(R.id.etClave);
         etConfirmar = findViewById(R.id.etConfirmar);

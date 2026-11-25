@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.santo_tomas.cuidapp.repositorio.AuthRepositorio;
+import com.santo_tomas.cuidapp.util.Textos;
 
 /*
  * VIEWMODEL de Login, Registro y cierre de sesión.
@@ -57,6 +58,11 @@ public class AuthViewModel extends ViewModel {
     public void registrar(String nombre, String correo, String clave, String confirmacion) {
         if (nombre.isEmpty() || correo.isEmpty() || clave.isEmpty() || confirmacion.isEmpty()) {
             mensaje.setValue("Completa todos los campos");
+            return;
+        }
+        String errorNombre = Textos.errorNombre(nombre, "Escribe tu nombre");
+        if (errorNombre != null) {
+            mensaje.setValue(errorNombre);
             return;
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {

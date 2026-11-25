@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CuidApp 2.0 Presentación</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: escenario 16:9 de 1280x720 que se escala a la ventana; panel de guión abajo. Tema oscuro fijo, como la app. */
+:root{
+  --bg:#0b1020; --stage:#0f1629; --surface:#18213a; --surface2:#222d4b; --line:#2c3a5e;
+  --fg:#eef1f8; --muted:#9aa6c3;
+  --seba:#9b7bff; --fabi:#2cc3f0; --sofi:#22c793; --alert:#f2557a; --warn:#f5c842;
+  --display:"Sora","Segoe UI",system-ui,sans-serif;
+  --body:"Inter","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);overflow:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
+.app{height:100%;display:flex;flex-direction:column;gap:10px;padding-block:10px;box-sizing:border-box}
+.viewport{flex:1;min-height:0;position:relative}
+.stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center center;
+  background:radial-gradient(1200px 600px at 85% -10%,#1b2650 0%,transparent 60%),var(--stage);
+  border-radius:18px;overflow:hidden;box-shadow:0 30px 80px #0008;border:1px solid var(--line)}
+.slide{position:absolute;inset:0;padding:64px 80px 70px;display:none;flex-direction:column;gap:22px;box-sizing:border-box}
+.slide.active{display:flex}
+.who{display:inline-flex;align-items:center;gap:10px;font:600 15px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.who::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 25%,transparent)}
+.who small{color:var(--muted);font-weight:500;letter-spacing:.02em;text-transform:none}
+[data-o="Sebastián"]{--c:var(--seba)} [data-o="Fabián"]{--c:var(--fabi)} [data-o="Sofía"]{--c:var(--sofi)}
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.02em}
+h1{font-size:84px;line-height:1;font-weight:800}
+h2{font-size:48px;line-height:1.08;font-weight:700}
+.lead{font-size:24px;line-height:1.45;color:var(--muted);max-width:60ch;margin:0}
+.hl{color:var(--c)}
+code,.mono{font-family:var(--mono)}
+.grid{display:grid;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.card h3{margin:0 0 6px;font:700 22px/1.2 var(--display)}
+.card p{margin:0;color:var(--muted);font-size:17px;line-height:1.45}
+.pill{display:inline-block;font:600 13px/1 var(--body);padding:7px 11px;border-radius:999px;background:var(--surface2);color:var(--fg);letter-spacing:.02em}
+.demo{margin-top:auto;display:flex;align-items:center;gap:12px;font-size:18px;color:var(--fg);background:color-mix(in srgb,var(--warn) 12%,transparent);
+  border:1px dashed color-mix(in srgb,var(--warn) 60%,transparent);border-radius:12px;padding:12px 16px;align-self:flex-start}
+.demo b{color:var(--warn);font:700 13px/1 var(--body);letter-spacing:.12em}
+pre.code{font-variant-ligatures:none;font-feature-settings:"calt" 0,"liga" 0;margin:0;background:#0a0f1e;border:1px solid var(--line);border-radius:14px;padding:20px 24px;font:400 18px/1.6 var(--mono);color:#cdd6f0;overflow:hidden}
+.k{color:#c79bff}.f{color:#5fd4ff}.s{color:#7fe0a8}.c{color:#6b7898}.n{color:#ffb86b}
+/* Animación de entrada escalonada */
+.slide.active [data-a]{animation:rise .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 110ms)}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.slide.active pre.code .ln{display:block;animation:type .4s ease both;animation-delay:calc(300ms + var(--l) * 120ms)}
+@keyframes type{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+/* Portada: trazo de pulso */
+.ecg{position:absolute;left:0;right:0;bottom:120px;height:160px;opacity:.9}
+.ecg path{fill:none;stroke:var(--alert);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2400;stroke-dashoffset:0}
+.slide.active .ecg path{animation:draw 2.4s ease-out both}
+@keyframes draw{from{stroke-dashoffset:2400}to{stroke-dashoffset:0}}
+.team{display:flex;gap:14px;flex-wrap:wrap}
+.team .pill{background:color-mix(in srgb,var(--c) 18%,var(--surface));border:1px solid color-mix(in srgb,var(--c) 55%,transparent)}
+/* Arquitectura */
+.flow{display:flex;align-items:stretch;gap:0;margin-top:10px}
+.node{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:left;min-width:0}
+.node h3{margin:0 0 6px;font:700 21px/1.2 var(--display)}
+.node p{margin:0;color:var(--muted);font-size:15px;line-height:1.4}
+.arrow{width:54px;display:grid;place-items:center;color:var(--muted);font-size:26px}
+.slide.active .arrow{animation:pulse 1.6s ease-in-out infinite;animation-delay:calc(var(--i) * 110ms)}
+@keyframes pulse{50%{color:var(--c);transform:translateX(4px)}}
+.node.fb{border-color:color-mix(in srgb,var(--warn) 60%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--warn) 10%,var(--surface)),var(--surface))}
+/* Árbol de datos */
+.tree{font:400 21px/1.7 var(--mono);color:#cdd6f0}
+.tree .d{color:var(--muted)}
+.tree .lvl{display:block;padding-left:calc(var(--d) * 34px);position:relative}
+/* CRUD */
+.crud{grid-template-columns:repeat(4,1fr)}
+.crud .card{text-align:left}
+.crud .letter{font:800 34px/1 var(--display);color:var(--c)}
+.crud .card{padding:14px 16px}.crud .card h3{font-size:19px}.crud .card p{font-size:15px}
+.crud code{display:block;margin-top:10px;font-size:15px;color:#5fd4ff}
+/* Validaciones */
+.field{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font-size:20px;position:relative}
+.field label{position:absolute;top:-10px;left:12px;background:var(--surface);padding:0 6px;font-size:13px;color:var(--muted)}
+.field.err{border-color:var(--alert)}
+.field.ok{border-color:var(--sofi)}
+.field + .msg{font-size:14px;margin:6px 2px 0}
+.msg.err{color:var(--alert)} .msg.ok{color:var(--sofi)}
+.typing::after{content:"|";animation:blink 1s steps(1) infinite;color:var(--c)}
+@keyframes blink{50%{opacity:0}}
+/* Reglas */
+.checks{display:flex;flex-direction:column;gap:10px}
+.check{display:flex;gap:12px;align-items:flex-start;font-size:17px;line-height:1.35}
+.check i{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--sofi) 22%,transparent);color:var(--sofi);font-style:normal;font-weight:700;font-size:15px}
+.big{font:800 96px/1 var(--display);color:var(--c)}
+/* Aislamiento */
+.phones{display:flex;gap:40px;justify-content:center;align-items:flex-end}
+.phone{width:280px;background:#0a0f1e;border:2px solid var(--line);border-radius:28px;padding:18px 14px}
+.phone h4{margin:0 0 10px;font:700 16px/1.2 var(--display)}
+.row{background:var(--surface);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:15px;display:flex;gap:10px;align-items:center}
+.av{width:28px;height:28px;border-radius:50%;background:var(--c);display:grid;place-items:center;font-weight:700;font-size:13px;color:#0b1020}
+.wall{font:700 16px/1.3 var(--body);color:var(--alert);text-align:center;max-width:180px}
+/* Controles */
+.bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bar button{font:600 14px/1 var(--body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}
+.bar button:hover{background:var(--surface2)}
+.bar button:focus-visible{outline:2px solid var(--seba);outline-offset:2px}
+.prog{flex:1;min-width:120px;display:flex;gap:3px;height:8px}
+.prog span{flex:var(--w);background:color-mix(in srgb,var(--c) 30%,var(--surface));border-radius:4px;cursor:pointer}
+.prog span.on{background:var(--c)}
+.count{font:600 14px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.notes{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;max-height:30vh;overflow:auto;font-size:16px;line-height:1.55}
+.notes p{margin:6px 0 0;max-width:90ch}
+.notes .dm{color:var(--warn)}
+.overlay{position:fixed;inset:0;background:#070b16f2;z-index:20;overflow:auto;
+  padding:calc(24px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.overlay .in{max-width:900px;margin:0 auto}
+.overlay h2{font-size:34px;margin-bottom:6px}
+.overlay table{width:100%;border-collapse:collapse;margin:14px 0 26px;font-variant-numeric:tabular-nums}
+.overlay td,.overlay th{border-bottom:1px solid var(--line);padding:10px 8px;text-align:left;vertical-align:top;font-size:15px;line-height:1.5}
+.overlay th{color:var(--muted);font-weight:600;font-size:13px;text-transform:uppercase;letter-spacing:.06em}
+.overlay .tot{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.tblwrap{overflow-x:auto}
+/* Capturas reales */
+.shot{display:block;height:auto;border-radius:16px;border:2px solid var(--line);box-shadow:0 14px 34px #0008;background:#0a0f1e}
+.console{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);box-shadow:0 12px 30px #0007}
+.split{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:start}
+.shots{display:flex;gap:12px;align-items:flex-start}
+.cap{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
+.real{font:600 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--warn)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="app">
+  <div class="viewport" id="vp">
+    <div class="stage" id="stage">
+
+      <!-- 1 Portada -->
+      <section class="slide" data-o="Sebastián">
+        <span class="who" data-a>Sebastián <small>· Programación Android · Actividad con nota</small></span>
+        <h1 data-a style="--i:1;margin-top:40px">CuidApp <span class="hl">2.0</span></h1>
+        <p class="lead" data-a style="--i:2">La ficha de cada paciente, en la nube y solo para su cuidador. Android en Java con Firebase Authentication y Cloud Firestore.</p>
+        <div class="team" data-a style="--i:3">
+          <span class="pill" data-o="Sebastián">Sebastián · Firebase y Auth</span>
+          <span class="pill" data-o="Fabián">Fabián · CRUD y validaciones</span>
+          <span class="pill" data-o="Sofía">Sofía · Registros y reglas</span>
+        </div>
+        <svg class="ecg" viewBox="0 0 1280 160" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 100 H300 l20 -10 l20 10 H420 l14 18 l22 -100 l24 132 l18 -50 H640 l20 -10 l20 10 H780 l14 18 l22 -100 l24 132 l18 -50 H1000 l20 -10 l20 10 H1280"/>
+        </svg>
+      </section>
+
+      <!-- 2 Problema -->
+      <section class="slide" data-o="Sebastián">
+        <span class="who" data-a>Sebastián <small>· El problema</small></span>
+        <h2 data-a style="--i:1">El cuaderno del cuidador se pierde.<br><span class="hl">La nube no.</span></h2>
+        <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:16px">
+          <div class="card" data-a style="--i:2"><h3>Antes</h3><p>Remedios, presión y contacto de emergencia anotados en papel. Si el cuaderno se pierde, se pierde la historia del paciente y nadie más puede consultarla.</p></div>
+          <div class="card" data-a style="--i:3"><h3 class="hl">Con CuidApp</h3><p>Cada cuidador entra con su cuenta, registra a sus pacientes y anota su control diario. Los datos quedan en Firestore y solo los ve quien los creó.</p></div>
+        </div>
+        <div class="team" data-a style="--i:4;margin-top:auto">
+          <span class="pill">Tema libre: salud y cuidado de adultos mayores</span>
+          <span class="pill">Java · minSdk 31</span>
+          <span class="pill">Firebase BoM 35.2.0</span>
+        </div>
+      </section>
+
+      <!-- 3 Arquitectura -->
+      <section class="slide" data-o="Sebastián">
+        <span class="who" data-a>Sebastián <small>· Cómo está construida</small></span>
+        <h2 data-a style="--i:1">MVVM: cada capa con <span class="hl">un solo trabajo</span></h2>
+        <div class="flow">
+          <div class="node" data-a style="--i:2"><h3>Activity</h3><p>Muestra el formulario, la lista y los mensajes. No habla con Firebase.</p></div>
+          <div class="arrow" style="--i:3">→</div>
+          <div class="node" data-a style="--i:3"><h3>ViewModel</h3><p>Valida los datos y expone el resultado con LiveData.</p></div>
+          <div class="arrow" style="--i:4">→</div>
+          <div class="node" data-a style="--i:4"><h3>Repositorio</h3><p>Única clase que llama a Auth y Firestore.</p></div>
+          <div class="arrow" style="--i:5">→</div>
+          <div class="node fb" data-a style="--i:5"><h3>Firebase</h3><p>Authentication: cuentas y sesión.<br>Firestore: pacientes y registros.</p></div>
+        </div>
+        <pre class="code" data-a style="--i:6;margin-top:auto"><span class="ln" style="--l:0"><span class="c">// app/build.gradle.kts</span></span><span class="ln" style="--l:1"><span class="f">implementation</span>(platform(libs.firebase.bom))   <span class="c">// 35.2.0</span></span><span class="ln" style="--l:2"><span class="f">implementation</span>(libs.firebase.auth)</span><span class="ln" style="--l:3"><span class="f">implementation</span>(libs.firebase.firestore)</span></pre>
+      </section>
+
+      <!-- 4 Auth -->
+      <section class="slide" data-o="Sebastián">
+        <span class="who" data-a>Sebastián <small>· Firebase Authentication</small></span>
+        <h2 data-a style="--i:1">Cuatro métodos para saber <span class="hl">quién eres</span></h2>
+        <div class="split">
+        <div class="grid" style="gap:18px">
+        <pre class="code" data-a style="--i:2;font-size:15px"><span class="ln" style="--l:0"><span class="k">FirebaseAuth</span> auth = <span class="k">FirebaseAuth</span>.<span class="f">getInstance</span>();</span><span class="ln" style="--l:1"> </span><span class="ln" style="--l:2">auth.<span class="f">createUserWithEmailAndPassword</span>(correo, clave);  <span class="c">// registro</span></span><span class="ln" style="--l:3">auth.<span class="f">signInWithEmailAndPassword</span>(correo, clave);      <span class="c">// iniciar sesión</span></span><span class="ln" style="--l:4"><span class="k">FirebaseUser</span> u = auth.<span class="f">getCurrentUser</span>();            <span class="c">// usuario actual</span></span><span class="ln" style="--l:5">auth.<span class="f">signOut</span>();                                     <span class="c">// cerrar sesión</span></span></pre>
+        <div class="team" data-a style="--i:3"><span class="pill">Clave de 6+ caracteres</span><span class="pill">Correo repetido → FirebaseAuthUserCollisionException</span><span class="pill">Todo asíncrono: addOnSuccessListener / addOnFailureListener</span></div>
+        <div class="demo" data-a style="--i:4;margin-top:0"><b>DEMO</b> Registrar cuenta, cerrar sesión y volver a entrar</div>
+        </div>
+        <div class="shots" data-a style="--i:3"><figure style="margin:0;width:165px"><img class="shot" src="img/01_login.jpg" width="165" alt="Inicio de sesión"><figcaption class="cap">Inicio de sesión</figcaption></figure><figure style="margin:0;width:165px"><img class="shot" src="img/02_menu_principal.jpg" width="165" alt="Usuario conectado"><figcaption class="cap">Usuario conectado</figcaption></figure></div>
+        </div>
+      </section>
+
+      <!-- 5 UID -->
+      <section class="slide" data-o="Sebastián">
+        <span class="who" data-a>Sebastián <small>· El UID une los dos servicios</small></span>
+        <h2 data-a style="--i:1">Un UID, <span class="hl">dos servicios</span></h2>
+        <div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:14px">
+          <div class="card" data-a style="--i:2;padding:14px 18px"><h3 style="font-size:19px">Authentication</h3><p style="font-size:15px">Guarda correo y contraseña con hash y entrega el UID.</p></div>
+          <div class="card" data-a style="--i:3;padding:14px 18px"><h3 style="font-size:19px">usuarios/{uid}</h3><p style="font-size:15px">Nombre, correo y fecha. <b style="color:var(--alert)">Nunca la contraseña.</b></p></div>
+          <div class="card" data-a style="--i:4;padding:14px 18px"><h3 style="font-size:19px">pacientes/{id}</h3><p style="font-size:15px">Cada paciente guarda el uid de su cuidador.</p></div>
+        </div>
+        <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px">
+          <figure data-a style="margin:0;--i:5"><img class="console" src="img/14_firebase_authentication.jpg" alt="Usuarios en Firebase Authentication"><figcaption class="cap"><span class="real">Captura real</span> · Authentication: UID Rm8ml1sy…</figcaption></figure>
+          <figure data-a style="margin:0;--i:6"><img class="console" src="img/15_firestore_usuarios.jpg" alt="Colección usuarios en Firestore"><figcaption class="cap"><span class="real">Captura real</span> · Firestore: documento usuarios/Rm8ml1sy…</figcaption></figure>
+        </div>
+      </section>
+
+      <!-- 6 Modelo de datos -->
+      <section class="slide" data-o="Fabián">
+        <span class="who" data-a>Fabián <small>· Datos en Cloud Firestore</small></span>
+        <h2 data-a style="--i:1">Tres niveles de datos</h2>
+        <div class="grid" style="grid-template-columns:1.1fr .9fr;align-items:start">
+          <div class="tree card" data-a style="--i:2">
+            <span class="lvl" style="--d:0">usuarios/<span class="d">{uid}</span></span>
+            <span class="lvl" style="--d:1"><span class="d">nombre · correo · fechaCreacion</span></span>
+            <span class="lvl" style="--d:0;margin-top:8px">pacientes/<span class="d">{id}</span></span>
+            <span class="lvl" style="--d:1"><span class="d">uid · nombre · rut · edad · peso</span></span>
+            <span class="lvl" style="--d:1"><span class="d">estatura · tipoSangre · condiciones</span></span>
+            <span class="lvl" style="--d:1"><span class="d">contacto de emergencia · cédula</span></span>
+            <span class="lvl" style="--d:1;margin-top:8px">registros/<span class="d">{aaaa-mm-dd}</span></span>
+            <span class="lvl" style="--d:2"><span class="d">presión · pulso · glucemia · alertas</span></span>
+          </div>
+          <div class="grid">
+            <pre class="code" data-a style="--i:3;font-size:16px"><span class="ln" style="--l:0">db.<span class="f">collection</span>(<span class="s">"pacientes"</span>)</span><span class="ln" style="--l:1">  .<span class="f">whereEqualTo</span>(<span class="s">"uid"</span>, uid)</span><span class="ln" style="--l:2">  .<span class="f">get</span>();</span></pre>
+            <figure data-a style="margin:0;--i:4"><img class="console" src="img/16_firestore_pacientes.jpg" alt="Colección pacientes en Firestore"><figcaption class="cap"><span class="real">Captura real</span> · Cada paciente lleva el uid de su cuidador</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 CRUD -->
+      <section class="slide" data-o="Fabián">
+        <span class="who" data-a>Fabián <small>· CRUD de pacientes</small></span>
+        <h2 data-a style="--i:1">Crear, leer, actualizar, <span class="hl">eliminar</span></h2>
+        <div class="split"><div class="grid crud" style="grid-template-columns:1fr 1fr;gap:14px">
+          <div class="card" data-a style="--i:2"><div class="letter">C</div><h3>Crear</h3><p>Formulario validado y mensaje «Paciente guardado».</p><code>.add(paciente)</code></div>
+          <div class="card" data-a style="--i:3"><div class="letter">R</div><h3>Leer</h3><p>Lista de mis pacientes y ficha con todos los datos.</p><code>.whereEqualTo("uid", uid).get()</code></div>
+          <div class="card" data-a style="--i:4"><div class="letter">U</div><h3>Actualizar</h3><p>El mismo formulario, cargado con los datos actuales.</p><code>.document(id).update(map)</code></div>
+          <div class="card" data-a style="--i:5"><div class="letter">D</div><h3>Eliminar</h3><p>Pide confirmación y borra también sus registros.</p><code>WriteBatch → commit()</code></div>
+        </div>
+        <div class="shots" data-a style="--i:6"><figure style="margin:0;width:140px"><img class="shot" src="img/03_mis_pacientes.jpg" width="140" alt="Leer: lista"><figcaption class="cap">Leer: lista</figcaption></figure><figure style="margin:0;width:140px"><img class="shot" src="img/06_formulario_datos.jpg" width="140" alt="Crear / editar"><figcaption class="cap">Crear / editar</figcaption></figure><figure style="margin:0;width:140px"><img class="shot" src="img/05_ficha_acciones.jpg" width="140" alt="Editar / eliminar"><figcaption class="cap">Editar / eliminar</figcaption></figure></div></div>
+        <div class="demo" data-a style="--i:7"><b>DEMO</b> Crear, editar y eliminar un paciente · cerrar y abrir la app: siguen los 5</div>
+      </section>
+
+      <!-- 8 Validaciones -->
+      <section class="slide" data-o="Fabián">
+        <span class="who" data-a>Fabián <small>· Validaciones</small></span>
+        <h2 data-a style="--i:1">Si el dato está mal, <span class="hl">no se guarda</span></h2>
+        <div class="split"><div class="grid" style="grid-template-columns:1fr 1fr;column-gap:26px;row-gap:18px">
+          <div data-a style="--i:2"><div class="field err"><label>RUT</label>12345678-9</div><div class="msg err">RUT inválido: revisa el dígito verificador</div></div>
+          <div data-a style="--i:3"><div class="field ok"><label>RUT</label>12345678-5</div><div class="msg ok">Módulo 11 correcto · el guion se pone solo</div></div>
+          <div data-a style="--i:4"><div class="field err"><label>Peso en kg</label>0</div><div class="msg err">Ingresa un peso real, entre 2 y 300 kg</div></div>
+          <div data-a style="--i:5"><div class="field ok"><label>Estatura en metros</label><span class="typing">1,80</span></div><div class="msg ok">La coma se pone sola · se guarda como 180 cm</div></div>
+          <div data-a style="--i:6"><div class="field ok"><label>Celular del contacto</label><span style="color:var(--muted)">+56 9 </span>9410 0689</div><div class="msg ok">8 dígitos · se guarda +56994100689</div></div>
+          <div data-a style="--i:7"><div class="field err"><label>Tipo de sangre</label><span style="color:var(--muted)">Selecciona…</span></div><div class="msg err">Selecciona el tipo de sangre</div></div>
+        </div>
+        <div data-a style="--i:8"><figure style="margin:0;width:150px"><img class="shot" src="img/09_validaciones.jpg" width="150" alt="Captura real en el teléfono"><figcaption class="cap">Captura real en el teléfono</figcaption></figure></div></div>
+        <div class="demo" data-a style="--i:9"><b>DEMO</b> Guardar con RUT 12345678-9 y peso 0</div>
+      </section>
+
+      <!-- 9 Cédula -->
+      <section class="slide" data-o="Fabián">
+        <span class="who" data-a>Fabián <small>· Escanear cédula</small></span>
+        <h2 data-a style="--i:1">La cédula llena el formulario</h2>
+        <div class="grid" style="grid-template-columns:1fr 1fr;align-items:start">
+          <div class="card" data-a style="--i:2">
+            <h3>Reverso: zona MRZ</h3>
+            <p class="mono" style="color:var(--fg);font-size:16px;line-height:1.6;margin-top:10px;word-break:break-all">INCHL1234567891&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;<br>5006158F3006264CHL12345678&lt;5&lt;3<br>PEREZ&lt;SOTO&lt;&lt;MARIA&lt;JOSE&lt;&lt;&lt;&lt;&lt;&lt;&lt;</p>
+            <p style="margin-top:10px">Ejemplo ficticio de las 3 líneas que lee el parser.</p>
+          </div>
+          <div class="checks" data-a style="--i:3">
+            <div class="check"><i>1</i><span>Foto o galería con permiso de cámara</span></div>
+            <div class="check"><i>2</i><span>ML Kit reconoce el texto <b>en el teléfono</b>; la foto no se sube</span></div>
+            <div class="check"><i>3</i><span>CedulaParser llena RUN, nombres, sexo, nacimiento y vencimiento</span></div>
+            <div class="check"><i>4</i><span>El cuidador revisa y presiona Guardar</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 Registros -->
+      <section class="slide" data-o="Sofía">
+        <span class="who" data-a>Sofía <small>· Registros diarios y dashboard</small></span>
+        <h2 data-a style="--i:1">Un registro por paciente, <span class="hl">cada día</span></h2>
+        <div class="split"><div class="grid" style="gap:20px">
+        <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:14px">
+          <div class="card" data-a style="--i:2"><h3>Hipertensión</h3><p>Presión sistólica y diastólica, pulso</p></div>
+          <div class="card" data-a style="--i:3"><h3>Diabetes</h3><p>Glucemia, momento e insulina</p></div>
+          <div class="card" data-a style="--i:4"><h3>EPOC o renal</h3><p>Saturación, frecuencia respiratoria, peso y diuresis</p></div>
+        </div>
+        <div class="grid" style="grid-template-columns:auto 1fr;align-items:center;gap:30px">
+          <div data-a style="--i:5"><div class="big" style="color:var(--alert)">110</div><div style="color:var(--muted);font-size:16px">lpm · último pulso, en rojo sobre 100</div></div>
+          <p class="lead" data-a style="--i:6;font-size:20px">Ruta: <span class="mono">pacientes/{id}/registros/2026-11-25</span>. Si un valor sale de rango se guarda una alerta, y el dashboard resume registros, medicación y alertas del día.</p>
+        </div>
+        </div>
+        <div data-a style="--i:6"><figure style="margin:0;width:165px"><img class="shot" src="img/10_dashboard.jpg" width="165" alt="Dashboard con datos reales"><figcaption class="cap">Dashboard con datos reales</figcaption></figure></div></div>
+        <div class="demo" data-a style="--i:7"><b>DEMO</b> Registro de hoy con pulso 110 → dashboard</div>
+      </section>
+
+      <!-- 11 Reglas -->
+      <section class="slide" data-o="Sofía">
+        <span class="who" data-a>Sofía <small>· Reglas de seguridad</small></span>
+        <h2 data-a style="--i:1">El servidor decide, <span class="hl">no la app</span></h2>
+        <div class="grid" style="grid-template-columns:1.15fr .85fr;align-items:start">
+          <pre class="code" data-a style="--i:2;font-size:15.5px"><span class="ln" style="--l:0"><span class="k">match</span> /pacientes/{id} {</span><span class="ln" style="--l:1">  <span class="k">allow</span> <span class="f">get</span>, <span class="f">update</span>, <span class="f">delete</span>: <span class="k">if</span></span><span class="ln" style="--l:2">    request.auth != <span class="n">null</span> &amp;&amp;</span><span class="ln" style="--l:3">    resource.data.uid == request.auth.uid;</span><span class="ln" style="--l:4">  <span class="k">allow</span> <span class="f">create</span>: <span class="k">if</span></span><span class="ln" style="--l:5">    request.resource.data.uid == request.auth.uid</span><span class="ln" style="--l:6">    &amp;&amp; pacienteValido(request.resource.data);</span><span class="ln" style="--l:7">}</span><span class="ln" style="--l:8"><span class="c">// registros: editar solo 24 h</span></span><span class="ln" style="--l:9">request.time &lt; resource.data.creado</span><span class="ln" style="--l:10">  + duration.<span class="f">value</span>(<span class="n">24</span>, <span class="s">'h'</span>)</span></pre>
+          <div class="checks">
+            <div class="check" data-a style="--i:3"><i>✓</i><span>Exige sesión iniciada</span></div>
+            <div class="check" data-a style="--i:4"><i>✓</i><span>Solo el dueño lee, edita o borra</span></div>
+            <div class="check" data-a style="--i:5"><i>✓</i><span>Campos permitidos, tipos y rangos (peso 2–300, RUT 12345678-5)</span></div>
+            <div class="check" data-a style="--i:6"><i>✓</i><span>Nadie puede cambiar el dueño</span></div>
+            <div class="check" data-a style="--i:7"><i>✓</i><span>Todo lo demás: <span class="mono">if false</span></span></div>
+            <div class="check" data-a style="--i:8"><i>✓</i><span><b>41 pruebas</b> en el emulador, todas aprobadas</span></div>
+            <figure data-a style="margin:4px 0 0;--i:9"><img class="console" src="img/17_firestore_reglas.jpg" alt="Reglas publicadas en la consola"><figcaption class="cap"><span class="real">Captura real</span> · Reglas publicadas en Firebase</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 Aislamiento -->
+      <section class="slide" data-o="Sofía">
+        <span class="who" data-a>Sofía <small>· Cada cuidador ve lo suyo</small></span>
+        <h2 data-a style="--i:1">Misma base de datos, <span class="hl">listas distintas</span></h2>
+        <div class="phones">
+          <div class="phone" data-a style="--i:2" data-o="Sebastián"><h4>Cuenta de Sebastián</h4>
+            <div class="row"><span class="av">M</span>Marcela · A+</div><div class="row"><span class="av">J</span>Juan · O+</div><div class="row"><span class="av">R</span>Rosa · B−</div><div class="row"><span class="av">L</span>Luis · O−</div><div class="row"><span class="av">S</span>Sebastian · A+</div></div>
+          <div class="wall" data-a style="--i:3">request.auth.uid ≠ resource.data.uid<br>PERMISSION_DENIED</div>
+          <div class="phone" data-a style="--i:4" data-o="Fabián"><h4>Cuenta de Fabián</h4>
+            <div class="row"><span class="av">F</span>Fabian · HTA</div></div>
+        </div>
+        <div class="demo" data-a style="--i:5"><b>DEMO</b> Cerrar sesión y entrar con la cuenta de Fabián</div>
+      </section>
+
+      <!-- 13 Extras -->
+      <section class="slide" data-o="Sofía">
+        <span class="who" data-a>Sofía <small>· Módulos del dashboard</small></span>
+        <h2 data-a style="--i:1">Más que un CRUD</h2>
+        <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:18px">
+          <div class="grid" data-a style="--i:2;gap:12px;justify-items:center"><div class="card" style="width:100%;box-sizing:border-box;padding:14px 18px"><h3 style="font-size:19px">Ejercicio</h3><p style="font-size:15px">4 rutinas suaves con temporizador. Meta: 30 minutos al día.</p></div><figure style="margin:0;width:150px"><img class="shot" src="img/11_ejercicio.jpg" width="150" alt="Rutinas"><figcaption class="cap">Rutinas</figcaption></figure></div>
+          <div class="grid" data-a style="--i:3;gap:12px;justify-items:center"><div class="card" style="width:100%;box-sizing:border-box;padding:14px 18px"><h3 style="font-size:19px">CuidApp Web</h3><p style="font-size:15px">La versión web dentro de un WebView, con reintento sin internet.</p></div><figure style="margin:0;width:150px"><img class="shot" src="img/12_cuidapp_web.jpg" width="150" alt="WebView"><figcaption class="cap">WebView</figcaption></figure></div>
+          <div class="grid" data-a style="--i:4;gap:12px;justify-items:center"><div class="card" style="width:100%;box-sizing:border-box;padding:14px 18px"><h3 style="font-size:19px">Navegador</h3><p style="font-size:15px">MINSAL, FONASA, SENAMA, ChileAtiende, ISP y Salud Responde.</p></div><figure style="margin:0;width:150px"><img class="shot" src="img/13_navegador.jpg" width="150" alt="Sitios oficiales"><figcaption class="cap">Sitios oficiales</figcaption></figure></div>
+        </div>
+      </section>
+
+      <!-- 14 Cierre -->
+      <section class="slide" data-o="Sofía">
+        <span class="who" data-a>Sofía <small>· Cierre</small></span>
+        <h2 data-a style="--i:1;font-size:56px;margin-top:30px">Authentication identifica.<br>Firestore guarda.<br><span class="hl">Las reglas protegen.</span></h2>
+        <div class="team" data-a style="--i:2;margin-top:auto">
+          <span class="pill" data-o="Sebastián">Sebastián</span><span class="pill" data-o="Fabián">Fabián</span><span class="pill" data-o="Sofía">Sofía</span>
+        </div>
+        <p class="lead" data-a style="--i:3">Gracias. ¿Preguntas?</p>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="bar">
+    <button id="prev" type="button" aria-label="Anterior">←</button>
+    <button id="next" type="button" aria-label="Siguiente">→</button>
+    <span class="count" id="count">1 / 14</span>
+    <div class="prog" id="prog"></div>
+    <button id="btnNotas" type="button">Guión (N)</button>
+    <button id="btnTodo" type="button">Guión completo (G)</button>
+    <button id="btnFull" type="button">Pantalla completa (F)</button>
+  </div>
+  <div class="notes" id="notas" hidden></div>
+</div>
+
+<div class="overlay" id="todo" hidden>
+  <div class="in">
+    <div class="bar" style="justify-content:space-between"><h2>Guión de la presentación</h2><button id="cerrarTodo" type="button">Cerrar (Esc)</button></div>
+    <div class="tot" id="totales"></div>
+    <div class="tblwrap"><table id="tabla"></table></div>
+    <h2 style="font-size:26px">Preguntas probables</h2>
+    <div class="tblwrap"><table id="preguntas"></table></div>
+    <h2 style="font-size:26px">Antes de presentar</h2>
+    <ul style="line-height:1.8;font-size:15px;color:var(--muted)">
+      <li>5 pacientes cargados en la cuenta de Sebastián y 1 en la de Fabián.</li>
+      <li>Reglas nuevas publicadas en Firebase.</li>
+      <li>Celular con batería, internet y la app ya abierta en el menú.</li>
+      <li>Consola de Firebase abierta en Authentication y en Firestore.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const GUION = [{"o": "Sebastián", "s": 30, "t": "Buenos días. Somos Fabián, Sofía y Sebastián, y presentamos CuidApp 2.0: una app Android para cuidadores de adultos mayores, hecha en Java y conectada a Firebase. Yo explico la conexión con Firebase y el inicio de sesión, Fabián el CRUD de pacientes y sus validaciones, y Sofía los registros diarios y las reglas de seguridad.", "d": ""}, {"o": "Sebastián", "s": 40, "t": "Un cuidador suele anotar en papel los remedios, la presión y el contacto de emergencia de cada paciente. Ese papel se pierde y nadie más puede consultarlo. CuidApp guarda esa ficha en la nube, ordenada por paciente y protegida por cuenta. Elegimos salud porque nos obliga a tomarnos en serio la seguridad de los datos.", "d": ""}, {"o": "Sebastián", "s": 50, "t": "La app sigue el patrón MVVM. La Activity solo muestra la pantalla, el ViewModel valida y guarda el estado, y el Repositorio es la única clase que habla con Firebase. El proyecto se conecta con el archivo google-services.json y el BoM de Firebase 35.2.0, que fija versiones compatibles de firebase-auth y firebase-firestore.", "d": ""}, {"o": "Sebastián", "s": 70, "t": "Firebase Authentication responde a la pregunta ¿quién eres? Usamos cuatro métodos: createUserWithEmailAndPassword para registrarse, signInWithEmailAndPassword para entrar, getCurrentUser para saber quién está conectado y signOut para salir. Si la contraseña tiene menos de 6 caracteres o el correo ya existe, la app muestra el error.", "d": "Registrar una cuenta nueva, cerrar sesión y volver a entrar. Mostrar que el menú dice «Hola, Sebastián»."}, {"o": "Sebastián", "s": 50, "t": "Al registrarse, Firebase entrega un UID único que no cambia. Con ese UID creamos el documento usuarios/{uid} con nombre y correo, nunca la contraseña: esa la guarda Authentication con hash. Cada paciente lleva el uid de su cuidador, y así unimos Authentication con Firestore.", "d": "En la consola, mostrar que el UID de Authentication es el mismo ID del documento en «usuarios»."}, {"o": "Fabián", "s": 50, "t": "En Firestore tenemos tres niveles. La colección usuarios; la colección pacientes, donde cada documento guarda RUT, edad, peso, estatura, tipo de sangre, condiciones y contacto de emergencia; y, dentro de cada paciente, la subcolección registros, con un documento por día. La lista se consulta con whereEqualTo(\"uid\", uid), así solo llegan los pacientes del cuidador conectado.", "d": ""}, {"o": "Fabián", "s": 90, "t": "Las cuatro operaciones del CRUD: crear usa add, leer usa get con el filtro por uid, actualizar usa update y eliminar usa delete. Al borrar un paciente también se borran sus registros diarios en un mismo WriteBatch, para no dejar datos huérfanos. Los datos quedan en la nube, por eso siguen ahí al volver a abrir la app.", "d": "Crear un paciente (mensaje «Paciente guardado»), editar su peso, eliminarlo confirmando el diálogo. Cerrar la app, abrirla y mostrar los 5 pacientes."}, {"o": "Fabián", "s": 60, "t": "Antes de guardar validamos cada campo. El RUT se escribe con el guion automático y se revisa el dígito verificador con módulo 11. La estatura se escribe 1,80 y se guarda en centímetros. El peso acepta tres enteros y un decimal, entre 2 y 300 kilos. El celular tiene 8 dígitos y el +56 9 ya viene puesto. Cada error aparece en rojo bajo su campo y se borra al corregirlo.", "d": "Intentar guardar con RUT 12345678-9 y peso 0 para mostrar los mensajes rojos."}, {"o": "Fabián", "s": 40, "t": "Para no escribir todo a mano, el botón Escanear cédula toma una foto y ML Kit lee el texto en el mismo teléfono, sin subir la imagen a ningún servidor. Leemos la zona MRZ del reverso y las etiquetas del frente para llenar RUN, nombres, fecha de nacimiento y vencimiento. El cuidador revisa los datos antes de guardar.", "d": ""}, {"o": "Sofía", "s": 60, "t": "Cada día el cuidador anota presión, pulso, glucemia, saturación, dolor y si el paciente tomó sus remedios. Los campos cambian según las condiciones del paciente: a un diabético se le pide glucemia, a uno con EPOC la saturación. Si un valor sale de rango, la app genera una alerta y el dashboard la resume.", "d": "Crear el registro de hoy con pulso 110 y mostrar el dashboard con el último pulso en rojo."}, {"o": "Sofía", "s": 80, "t": "Las reglas de seguridad se ejecutan en el servidor de Firebase, así que nadie se las puede saltar desde la app. Exigen sesión iniciada, que el uid del documento sea el del usuario conectado, que solo existan los campos permitidos con tipos y rangos válidos, y que nadie cambie el dueño. Un registro diario solo se edita durante 24 horas. Todo lo que no está declarado queda bloqueado. Las probamos con 41 pruebas automáticas en el emulador.", "d": ""}, {"o": "Sofía", "s": 50, "t": "Ahora entro con la cuenta de Fabián. Fabián ve solo su paciente. Los de Sebastián siguen en Firestore, pero ni la consulta ni las reglas se los entregan. Por eso nunca dejamos reglas abiertas: con allow read, write: if true, cualquiera con la app podría leer datos de salud ajenos.", "d": "Cerrar sesión, entrar con la cuenta de Fabián y mostrar que la lista cambia."}, {"o": "Sofía", "s": 30, "t": "El dashboard suma tres módulos más: rutinas de ejercicio con temporizador, la versión web de CuidApp dentro de la app y un navegador con sitios oficiales como MINSAL, FONASA y Salud Responde.", "d": ""}, {"o": "Sofía", "s": 20, "t": "En resumen: Firebase Authentication identifica al cuidador, Firestore guarda sus pacientes y registros, y las reglas aseguran que cada uno vea solo lo suyo. Muchas gracias. ¿Preguntas?", "d": ""}];
+const PREGUNTAS = [{"o": "Sebastián", "p": "¿Cuál es la diferencia entre Authentication y Firestore?", "r": "Authentication maneja cuentas, contraseñas y sesiones. Firestore guarda los datos de la app. Se unen por el UID y por request.auth en las reglas."}, {"o": "Sebastián", "p": "¿Por qué no guardan la contraseña en Firestore?", "r": "Firestore guarda el dato tal cual. Authentication ya la guarda con hash y nunca la devuelve, así que copiarla solo agrega riesgo."}, {"o": "Fabián", "p": "¿Cómo validan el RUT?", "r": "Formato 12345678-5 y dígito verificador con módulo 11 (RutUtil.esValido). Las reglas además revisan el formato en el servidor."}, {"o": "Fabián", "p": "¿Cómo persisten los datos al cerrar la app?", "r": "Se guardan en Cloud Firestore, en la nube. Al abrir, la app vuelve a consultar con el uid del usuario."}, {"o": "Sofía", "p": "Si ya tienen reglas, ¿para qué filtran con whereEqualTo?", "r": "Las reglas no filtran: si la consulta pidiera todos los pacientes, Firestore la rechazaría completa. El filtro y la regla tienen que coincidir."}, {"o": "Sofía", "p": "¿Qué pasa si alguien sin sesión intenta leer?", "r": "request.auth es null, la regla lo rechaza y la app recibe PERMISSION_DENIED."}];
+const slides = [...document.querySelectorAll('.slide')];
+const stage = document.getElementById('stage'), vp = document.getElementById('vp');
+let i = 0;
+const fmt = s => Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+
+function escalar(){
+  const k = Math.min(vp.clientWidth/1280, vp.clientHeight/720);
+  stage.style.transform = `translate(-50%,-50%) scale(${k})`;
+}
+function ir(n){
+  i = Math.max(0, Math.min(slides.length-1, n));
+  slides.forEach((s,j)=>s.classList.toggle('active', j===i));
+  document.getElementById('count').textContent = (i+1) + ' / ' + slides.length;
+  [...document.getElementById('prog').children].forEach((b,j)=>b.classList.toggle('on', j<=i));
+  const g = GUION[i];
+  document.getElementById('notas').innerHTML =
+    `<span class="who" data-o="${g.o}">${g.o} <small>· ${fmt(g.s)} min</small></span><p>${g.t}</p>` +
+    (g.d ? `<p class="dm"><b>Demo:</b> ${g.d}</p>` : '');
+  if (location.hash !== '#s' + (i+1)) history.replaceState(null, '', '#s' + (i+1));
+}
+const prog = document.getElementById('prog');
+GUION.forEach((g,j)=>{
+  const b = document.createElement('span');
+  b.dataset.o = g.o; b.style.setProperty('--w', g.s); b.title = (j+1) + ' · ' + g.o;
+  b.onclick = () => ir(j); prog.appendChild(b);
+});
+// Guión completo
+const tot = {};
+GUION.forEach(g => tot[g.o] = (tot[g.o]||0) + g.s);
+document.getElementById('totales').innerHTML = Object.entries(tot)
+  .map(([o,s]) => `<span class="pill" data-o="${o}" style="background:color-mix(in srgb,var(--c) 18%,var(--surface))">${o}: ${fmt(s)} min</span>`).join('') +
+  `<span class="pill">Total: ${fmt(Object.values(tot).reduce((a,b)=>a+b,0))} min</span>`;
+document.getElementById('tabla').innerHTML = '<tr><th>#</th><th>Quién</th><th>Tiempo</th><th>Qué decir</th></tr>' +
+  GUION.map((g,j)=>`<tr><td>${j+1}</td><td><span class="who" data-o="${g.o}">${g.o}</span></td><td>${fmt(g.s)}</td><td>${g.t}${g.d?`<br><span style="color:var(--warn)"><b>Demo:</b> ${g.d}</span>`:''}</td></tr>`).join('');
+document.getElementById('preguntas').innerHTML = '<tr><th>Responde</th><th>Pregunta</th><th>Respuesta corta</th></tr>' +
+  PREGUNTAS.map(q=>`<tr><td><span class="who" data-o="${q.o}">${q.o}</span></td><td>${q.p}</td><td>${q.r}</td></tr>`).join('');
+
+const notas = document.getElementById('notas'), todo = document.getElementById('todo');
+const alternarNotas = () => { notas.hidden = !notas.hidden; requestAnimationFrame(escalar); };
+const alternarTodo = () => { todo.hidden = !todo.hidden; };
+async function pantallaCompleta(){
+  try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch(e) {}
+}
+document.getElementById('prev').onclick = () => ir(i-1);
+document.getElementById('next').onclick = () => ir(i+1);
+document.getElementById('btnNotas').onclick = alternarNotas;
+document.getElementById('btnTodo').onclick = alternarTodo;
+document.getElementById('cerrarTodo').onclick = alternarTodo;
+document.getElementById('btnFull').onclick = pantallaCompleta;
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !todo.hidden) { alternarTodo(); return; }
+  if (!todo.hidden) return;
+  if (['ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); ir(i+1); }
+  else if (['ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); ir(i-1); }
+  else if (e.key === 'Home') ir(0);
+  else if (e.key === 'End') ir(slides.length-1);
+  else if (e.key.toLowerCase() === 'n') alternarNotas();
+  else if (e.key.toLowerCase() === 'g') alternarTodo();
+  else if (e.key.toLowerCase() === 'f') pantallaCompleta();
+});
+let x0 = null;
+vp.addEventListener('touchstart', e => x0 = e.touches[0].clientX, {passive:true});
+vp.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) ir(i + (dx < 0 ? 1 : -1)); x0 = null; });
+vp.addEventListener('click', e => { if (e.target.closest('button')) return; ir(i+1); });
+window.addEventListener('resize', escalar);
+window.addEventListener('hashchange', () => { const n = parseInt((location.hash.match(/^#s(\d+)$/)||[])[1]); if (n && n-1 !== i) ir(n-1); });
+const inicial = parseInt((location.hash.match(/^#s(\d+)$/)||[])[1]);
+escalar(); ir(inicial ? inicial-1 : 0);
+</script>
+
+</body>
+</html>

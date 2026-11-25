@@ -6,13 +6,18 @@
 [![Java](https://img.shields.io/badge/Java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](#)
 [![Status](https://img.shields.io/badge/Status-Completado-success?style=for-the-badge)](#)
 
-*Una aplicación médica diseñada para centralizar la información del paciente, facilitar el acceso a expedientes y monitorear la salud en tiempo real.*
+*App Android (Java, MVVM) para cuidadores: CRUD de pacientes y registros diarios de salud con Firebase Auth y Cloud Firestore, reglas de seguridad por UID, validación de RUT, lectura de cédula con ML Kit y dashboard de monitoreo. Proyecto IGR00164, Santo Tomás.*
 
 </div>
 
 ---
 
-## 🔥 Versión 2.0: CuidApp + Firebase
+## 📁 Documentos de la entrega
+
+| Archivo | Contenido |
+| :---
+
+## 🔥 Versión 2.0: CuidApp + Firebase (Actividad con nota)
 
 Esta versión conecta CuidApp a **Firebase** y cambia la ficha de un solo paciente (guardada en `SharedPreferences`, solo en el teléfono) por un **CRUD de pacientes en Cloud Firestore**, protegido con **Firebase Authentication**.
 
@@ -55,11 +60,11 @@ Esta versión conecta CuidApp a **Firebase** y cambia la ficha de un solo pacien
 | `model/RegistroDiario`, `repositorio/RegistroRepositorio`, `viewmodel/RegistroViewModel` | MVVM de los registros |
 | `util/Condiciones`, `util/RangosClinicos` | Catálogo de condiciones y cálculo de alertas |
 | `firestore.rules` | Reglas de seguridad |
-| `pruebas-reglas/` | 41 pruebas automáticas de las reglas en el emulador (`npm install` y `npm test`) |
+| `pruebas-reglas/` | 46 pruebas automáticas de las reglas en el emulador (`npm install` y `npm test`) |
 | `util/CedulaParser`, `util/Mascaras`, `util/Formatos`, `util/Fechas` | Escaneo de cédula (ML Kit), RUT `12345678-5`, estatura `1,80`, celular `+56 9` y fechas |
 | `DashboardViewModel`, `model/ResumenDashboard` | Monitoreo diario con datos reales (sin BPM al azar) |
 | `EjercicioActivity`, `WebCuidAppActivity`, `NavegadorActivity` | Pestañas Ejercicio, Web y Navegador del monitoreo |
-| `app/src/test/` | 16 pruebas unitarias (cédula, formatos, máscaras y resumen del día) |
+| `app/src/test/` | 19 pruebas unitarias (cédula, formatos, máscaras, textos sin números y resumen del día) |
 
 ### Estructura en Firestore
 

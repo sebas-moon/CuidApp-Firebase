@@ -39,6 +39,7 @@ import com.santo_tomas.cuidapp.util.Condiciones;
 import com.santo_tomas.cuidapp.util.Fechas;
 import com.santo_tomas.cuidapp.util.Formatos;
 import com.santo_tomas.cuidapp.util.Mascaras;
+import com.santo_tomas.cuidapp.util.Textos;
 import com.santo_tomas.cuidapp.util.RutUtil;
 import com.santo_tomas.cuidapp.viewmodel.PacienteViewModel;
 
@@ -235,6 +236,10 @@ public class FormularioPacienteActivity extends BaseActivity {
         Mascaras.rut(etRut);                 // 123456785 -> 12345678-5
         Mascaras.estatura(etEstatura);       // 180 -> 1,80
         Mascaras.peso(etPeso);               // 11111 -> 111 (máx. 3 enteros y 1 decimal)
+        Textos.bloquearNumeros(etNombre);          // los nombres no llevan números
+        Textos.bloquearNumeros(etContactoNombre);
+        Textos.bloquearNumeros(etAlergias);        // las alergias tampoco
+        Textos.bloquearNumeros(etNacionalidad);    // ni la nacionalidad
         Mascaras.fecha(etFechaNacimiento);   // 15011950 -> 15/01/1950
         Mascaras.fecha(etFechaEmision);
         Mascaras.fecha(etFechaVencimiento);
@@ -495,17 +500,10 @@ public class FormularioPacienteActivity extends BaseActivity {
     private boolean validar() {
         boolean ok = true;
 
-        // Nombre: obligatorio, 3 a 60 caracteres, solo letras y espacios
-        String nombre = texto(etNombre);
-        if (TextUtils.isEmpty(nombre)) {
-            ok = error(tilNombre, "El nombre es obligatorio");
-        } else if (nombre.length() < 3 || nombre.length() > 60) {
-            ok = error(tilNombre, "Debe tener entre 3 y 60 caracteres");
-        } else if (!nombre.matches("[\\p{L} .'-]+")) {
-            ok = error(tilNombre, "Usa solo letras");
-        } else {
-            tilNombre.setError(null);
-        }
+        // Nombre: obligatorio, sin números, 3 a 60 caracteres, solo letras y espacios
+        String errorNombre = Textos.errorNombre(texto(etNombre), "El nombre es obligatorio");
+        if (errorNombre != null) ok = error(tilNombre, errorNombre);
+        else tilNombre.setError(null);
 
         // RUT: formato 12345678-5 (7 u 8 dígitos, guion y dígito verificador) y módulo 11
         String rut = texto(etRut);
@@ -551,19 +549,15 @@ public class FormularioPacienteActivity extends BaseActivity {
         // Tipo de sangre: debe elegirse de la lista
         if (!validarSeleccion(tilSangre, etSangre, "Selecciona el tipo de sangre")) ok = false;
 
-        // Alergias: opcional, máximo 100 caracteres
-        if (texto(etAlergias).length() > 100) {
-            ok = error(tilAlergias, "Máximo 100 caracteres");
-        } else {
-            tilAlergias.setError(null);
-        }
+        // Alergias: opcional, sin números, máximo 100 caracteres
+        String errorAlergias = Textos.errorAlergias(texto(etAlergias));
+        if (errorAlergias != null) ok = error(tilAlergias, errorAlergias);
+        else tilAlergias.setError(null);
 
         // Documento de identidad: todo opcional, pero si se escribe debe tener formato correcto
-        if (texto(etNacionalidad).length() > 30) {
-            ok = error(tilNacionalidad, "Máximo 30 caracteres");
-        } else {
-            tilNacionalidad.setError(null);
-        }
+        String errorNacionalidad = Textos.errorNacionalidad(texto(etNacionalidad));
+        if (errorNacionalidad != null) ok = error(tilNacionalidad, errorNacionalidad);
+        else tilNacionalidad.setError(null);
         String nacimiento = texto(etFechaNacimiento);
         if (!fechaOpcionalValida(tilFechaNacimiento, nacimiento)) {
             ok = false;
@@ -582,14 +576,10 @@ public class FormularioPacienteActivity extends BaseActivity {
         // Condiciones: opcionales (sin ninguna = "Monitoreo general")
 
         // Contacto: nombre obligatorio
-        String contacto = texto(etContactoNombre);
-        if (TextUtils.isEmpty(contacto)) {
-            ok = error(tilContactoNombre, "El contacto de emergencia es obligatorio");
-        } else if (contacto.length() < 3 || contacto.length() > 60) {
-            ok = error(tilContactoNombre, "Debe tener entre 3 y 60 caracteres");
-        } else {
-            tilContactoNombre.setError(null);
-        }
+        String errorContacto = Textos.errorNombre(texto(etContactoNombre),
+                "El contacto de emergencia es obligatorio");
+        if (errorContacto != null) ok = error(tilContactoNombre, errorContacto);
+        else tilContactoNombre.setError(null);
 
         // Relación con el paciente: debe elegirse de la lista
         if (!validarSeleccion(tilRelacion, etRelacion, "Selecciona la relación")) ok = false;

@@ -35,6 +35,7 @@ service cloud.firestore {
                                'nacionalidad', 'fechaNacimiento', 'numeroDocumento',
                                'fechaEmision', 'fechaVencimiento'])
           && d.nombre is string && d.nombre.size() >= 3 && d.nombre.size() <= 60
+          && !d.nombre.matches('.*[0-9].*')                              // sin números
           && d.rut is string && d.rut.matches('[0-9]{7,8}-[0-9K]')        // 12345678-5
           && d.edad is int && d.edad >= 0 && d.edad <= 120
           && d.sexo in ['Femenino', 'Masculino', 'Otro']
@@ -43,11 +44,12 @@ service cloud.firestore {
           && d.tipoSangre in ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-']
           && d.condiciones is list && d.condiciones.size() <= 4
           && d.condiciones.hasOnly(['HIPERTENSION', 'DIABETES', 'EPOC', 'ERC'])
-          && d.alergias is string && d.alergias.size() <= 100
+          && d.alergias is string && d.alergias.size() <= 100 && !d.alergias.matches('.*[0-9].*')
           && d.contactoNombre is string && d.contactoNombre.size() >= 3 && d.contactoNombre.size() <= 60
+          && !d.contactoNombre.matches('.*[0-9].*')
           && d.contactoRelacion is string && d.contactoRelacion.size() <= 30
           && d.contactoTelefono is string && d.contactoTelefono.matches('[+]569[0-9]{8}')   // +56 9 y 8 dígitos
-          && textoOpcional(d, 'nacionalidad', 30)
+          && textoOpcional(d, 'nacionalidad', 30) && !d.get('nacionalidad', '').matches('.*[0-9].*')
           && fechaOpcional(d, 'fechaNacimiento')
           && (d.get('numeroDocumento', '') == '' || d.numeroDocumento.matches('[0-9]{3}[.][0-9]{3}[.][0-9]{3}|[0-9]{9}'))
           && fechaOpcional(d, 'fechaEmision')
@@ -143,7 +145,8 @@ service cloud.firestore {
     match /usuarios/{userId} {
       allow read, delete: if estaAutenticado() && request.auth.uid == userId;
       allow create, update: if estaAutenticado() && request.auth.uid == userId
-                            && request.resource.data.keys().hasOnly(['nombre', 'correo', 'fechaCreacion']);
+                            && request.resource.data.keys().hasOnly(['nombre', 'correo', 'fechaCreacion'])
+                            && !request.resource.data.get('nombre', '').matches('.*[0-9].*');
     }
 
     // ---- Todo lo demás: CERRADO ----
